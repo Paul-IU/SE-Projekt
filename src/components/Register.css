@@ -1,0 +1,11 @@
+.register-container {
+    background-color: #efebdc; /* Hintergrundfarbe der Registrierungsseite */
+}
+
+.register-box {
+    background: white;
+    border-radius: 10px;
+    width: 350px;
+    margin-top: 135px;
+
+}
