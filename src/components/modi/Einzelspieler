@@ -1,0 +1,82 @@
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const Einzelspieler = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const fach = params.get("fach");
+
+  const [questions, setQuestions] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showSolution, setShowSolution] = useState(false);
+
+  useEffect(() => {
+    console.log("Fach aus URL-Parameter:", fach); // Debugging: Fach prüfen
+    if (!fach) {
+      console.error("Kein Fach angegeben!");
+      return;
+    }
+
+    fetch(`/api/fragen?fach=${encodeURIComponent(fach)}`)
+      .then(res => {
+        console.log("API-Antwort-Status:", res.status); // Debugging: HTTP-Status
+        return res.json();
+      })
+      .then(data => {
+        console.log("Empfangene Fragen:", data); // Debugging: Daten aus API prüfen
+        setQuestions(data);
+      })
+      .catch(err => console.error("Fehler beim Laden der Fragen:", err));
+  }, [fach]);
+
+  const handleAnswer = (answerIndex) => {
+    setSelectedAnswer(answerIndex);
+    setShowSolution(true);
+  };
+
+  const nextQuestion = () => {
+    setSelectedAnswer(null);
+    setShowSolution(false);
+    setCurrentIndex(prev => prev + 1);
+  };
+
+  if (!fach) return <p>Kein Fach ausgewählt!</p>;
+  if (questions.length === 0) return <p>Lade Fragen...</p>;
+  if (currentIndex >= questions.length) return (
+    <div className="quiz-container">
+      <p>Quiz beendet! Danke fürs Mitmachen.</p>
+      <button onClick={() => navigate("/")}>Zurück zur Startseite</button>
+    </div>
+  );
+
+  const question = questions[currentIndex];
+  const antworten = [question.antwort_1, question.antwort_2, question.antwort_3, question.antwort_4];
+
+  return (
+    <div className="quiz-container">
+      <h2>Frage {currentIndex + 1} von {questions.length}</h2>
+      <p>{question.frage}</p>
+      {antworten.map((ans, index) => (
+        <button
+          key={index}
+          className={`answer-btn ${showSolution ? (index + 1 === question.richtige_antwort ? "correct" : "incorrect") : ""}`}
+          onClick={() => handleAnswer(index + 1)}
+          disabled={showSolution}
+        >
+          {ans}
+        </button>
+      ))}
+      {showSolution && (
+        <div>
+          <p>Richtige Antwort: {antworten[question.richtige_antwort - 1]}</p>
+          {currentIndex < questions.length - 1 && <button onClick={nextQuestion}>Nächste Frage</button>}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Einzelspieler;
+
