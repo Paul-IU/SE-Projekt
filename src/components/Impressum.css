@@ -1,0 +1,30 @@
+.impressum-container {
+    background-color: #f8f9fa; /* Heller Hintergrund für bessere Lesbarkeit */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 50px auto;
+  }
+  
+  .impressum-container h1, 
+  .impressum-container h2 {
+    color: #343a40; /* Dunkelgraue Überschriften */
+  }
+  
+  .impressum-container p, 
+  .impressum-container ul {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .impressum-container ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .impressum-container .btn {
+    display: block;
+    margin: 20px auto;
+  }
+  

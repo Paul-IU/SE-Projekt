@@ -5,9 +5,30 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  
 }
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Mindestens volle Bildschirmhöhe */
+}
 
+.main-content {
+  flex: 1; /* Lässt den Inhalt wachsen und drückt den Footer nach unten */
+}
+
+.footer {
+  background: linear-gradient(to right, #343a40, #212529); /* Dunkler Verlauf */
+  color: #f8f9fa;
+  padding: 15px 0;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
 
 
 code {
@@ -16,12 +37,5 @@ code {
 }
 
 
-.logo { 
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
-}
 
-.logo:hover { /* vergrößert das logo, wenn maus drüber ist */
-  transform: scale(1.2);
-}
 

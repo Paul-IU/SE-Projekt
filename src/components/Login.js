@@ -28,9 +28,8 @@ const Login = () => {
         <img
         src={logo}
         alt="Logo"
-        className="logo position-absolute top-0 start-5 m-5 rounded-circle"
-        width="250"
-        height="250"
+        className="login-logo position-absolute top-0 start-5 m-5 rounded-circle "
+        
         onClick={() => navigate("/")}
       />
       <div className="login-box p-4 shadow-lg">

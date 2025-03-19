@@ -10,6 +10,9 @@ import VS from "../components/modi/VS";
 import Kooperativ from "../components/modi/Kooperativ.js";
 import Fragebogen from "../components/modi/Fragebogen.js";
 import NotFound from "../components/NotFound";
+import Impressum from "../components/Impressum.js";
+import Datenschutz from "../components/Datenschutz.js";
+
 console.log("EinzelspielerOF:", EinzelspielerOF);
 const AppRouter = () => {
   return (
@@ -17,6 +20,8 @@ const AppRouter = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/impressum" element={<Impressum />} />
+      <Route path="/datenschutz" element={<Datenschutz />} />
       <Route path="/home" element={<Home/>} />
       <Route path="/einzelspieler" element={<Einzelspieler/>} />
       <Route path="/einzelspielerof" element={<EinzelspielerOF/>} />
