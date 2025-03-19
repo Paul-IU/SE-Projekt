@@ -4,11 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Home.css";
 
 const LOGOS = {
-  logo: "/DinoGreenLogo.png",
-  einzelspieler: "/DinoBlueLogo.png",
-  vs: "/DinoRedLogo.png",
-  kooperativ: "/DinoYellowLogo.png",
-  fragebogen: "/DinopinkLogo.png"
+  logo: process.env.PUBLIC_URL + "/DinoGreenLogo.png",
+  einzelspieler: process.env.PUBLIC_URL + "/DinoBlueLogo.png",
+  einzelspielerOF: process.env.PUBLIC_URL + "/DinoBlueLogo.png",
+  vs: process.env.PUBLIC_URL + "/DinoRedLogo.png",
+  kooperativ: process.env.PUBLIC_URL + "/DinoYellowLogo.png",
+  fragebogen: process.env.PUBLIC_URL + "/DinopinkLogo.png"
 };
 
 const Home = () => {
@@ -17,8 +18,8 @@ const Home = () => {
   const [selectedFach, setSelectedFach] = useState("");
 
   const fächer = [
-    "Einführung in das Internet of Things",
-    "Ergonomie für die Web-Entwicklung"
+    "Einfuehrung in das Internet of Things",
+    "Ergonomie fuer die Web-Entwicklung"
   ];
 
   const startEinzelspieler = () => {
@@ -33,7 +34,7 @@ const Home = () => {
     <div className="home-container d-flex flex-column justify-content-center align-items-center vh-100 position-relative">
       {/* Logo oben links */}
       <img
-        src={LOGOS.logo} 
+        src={LOGOS.logo}
         alt="Hauptlogo"
         className="position-absolute top-0 start-0 m-4 home-logo"
       />
@@ -49,39 +50,68 @@ const Home = () => {
 
       {/* Spielmodi mit individuellen Logos */}
       <div className="d-flex flex-wrap justify-content-center gap-4 mt-5">
-        {[
-          { name: "Einzelspieler", action: () => setShowPopup(true), logo: LOGOS.einzelspieler },
-          { name: "Vs", path: "/vs", logo: LOGOS.vs },
-          { name: "Kooperativ", path: "/kooperativ", logo: LOGOS.kooperativ },
-          { name: "Fragebogen", path: "/fragebogen", logo: LOGOS.fragebogen }
-        ].map((mode, index) => (
-          <button 
-            key={index}
-            className="btn btn-outline-dark home-button d-flex flex-column align-items-center"
-            onClick={mode.action ? mode.action : () => navigate(mode.path)}
-          >
-            <img src={mode.logo} alt={mode.name} className="home-button-logo" />
-            {mode.name}
-          </button>
-        ))}
+        {/* Einzelspieler mit Fach-Auswahl */}
+        <button 
+          className="btn btn-outline-dark home-button d-flex flex-column align-items-center"
+          onClick={() => setShowPopup(true)}
+        >
+          <img src={LOGOS.einzelspieler} alt="Einzelspieler" className="home-button-logo" />
+          Einzelspieler
+        </button>
+
+        <button 
+          className="btn btn-outline-dark home-button d-flex flex-column align-items-center"
+          onClick={() => navigate("/vs")}
+        >
+          <img src={LOGOS.vs} alt="Vs" className="home-button-logo" />
+          Vs
+        </button>
+
+        <button 
+          className="btn btn-outline-dark home-button d-flex flex-column align-items-center"
+          onClick={() => navigate("/kooperativ")}
+        >
+          <img src={LOGOS.kooperativ} alt="Kooperativ" className="home-button-logo" />
+          Kooperativ
+        </button>
+
+        <button 
+          className="btn btn-outline-dark home-button d-flex flex-column align-items-center"
+          onClick={() => navigate("/fragebogen")}
+        >
+          <img src={LOGOS.fragebogen} alt="Fragebogen" className="home-button-logo" />
+          Fragebogen
+        </button>
       </div>
 
-      {/* Popup für Fächer-Auswahl */}
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <h3>Wähle ein Fach</h3>
-            <select className="form-select mb-3" onChange={(e) => setSelectedFach(e.target.value)}>
-              <option value="">-- Fach auswählen --</option>
-              {fächer.map((fach, index) => (
-                <option key={index} value={fach}>{fach}</option>
-              ))}
-            </select>
-            <button className="btn btn-primary me-2" onClick={startEinzelspieler}>Starten</button>
-            <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Abbrechen</button>
+    {showPopup && (
+      <div className="popup-overlay">
+        <div className="popup">
+          <h3>Wähle ein Fach</h3>
+          
+          {/* Liste der Fächer als klickbare Buttons */}
+          <div className="fach-liste">
+            {fächer.map((fach, index) => (
+              <button 
+                key={index} 
+                className={`fach-button ${selectedFach === fach ? "selected" : ""}`} 
+                onClick={() => setSelectedFach(fach)}
+              >
+                {fach}
+              </button>
+            ))}
           </div>
+
+          <button className="btn btn-primary me-2" onClick={startEinzelspieler} disabled={!selectedFach}>
+            Starten
+          </button>
+          <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>
+            Abbrechen
+          </button>
         </div>
-      )}
+      </div>
+    )}
+
     </div>
   );
 };
