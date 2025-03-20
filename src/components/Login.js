@@ -7,8 +7,12 @@ import "./Login.css";
 const LOGO_DEFAULT = "/DinoGreenLogo.png"
 const LOGO_BLINDFOLD = "/DinoGreenBlindfoldLogo.png"
 
+const GUEST_EMAIL = "gast@iu-study.org";
+const GUEST_PASSWORD = "Gast123?";
+
 const Login = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [logo, setLogo] = useState(LOGO_DEFAULT);
 
@@ -16,12 +20,32 @@ const Login = () => {
       setLogo(LOGO_BLINDFOLD);
     };
     const handlePasswordBlur = () => {
-      setLogo(LOGO_DEFAULT)
-    }
+      setLogo(LOGO_DEFAULT);
+    };
 
+
+    const handleEmailChange = (e) => {
+      setEmail(e.target.value);
+    };
     const handlePasswordChange = (e) => {
       setPassword(e.target.value);
-  };
+    };
+
+    const handleLogin = (e) => {
+      e.preventDefault();
+
+      if (email.toLocaleLowerCase === GUEST_EMAIL && password === GUEST_PASSWORD) {
+        console.log("Gast-Login erkannt");
+        sessionStorage.setItem("isGuest", "true"); // Speichert Gast-Status
+      } else {
+        console.log("Normales Login:", {email, password});
+        sessionStorage.setItem("isGuest", "false");
+
+      }
+      navigate("/home");
+    };
+
+
 
   return (
     <div className="login-container d-flex justify-content-center align-items-center vh-100">
@@ -34,7 +58,7 @@ const Login = () => {
       />
       <div className="login-box p-4 shadow-lg">
         <h2 className="text-center mb-4">Login</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">E-Mail</label>
             <input 
@@ -42,6 +66,8 @@ const Login = () => {
               className="form-control" 
               id="email" 
               placeholder="Gib deine E-Mail ein" 
+              value={email}
+              onChange={handleEmailChange}
             />
           </div>
           <div className="mb-3">
