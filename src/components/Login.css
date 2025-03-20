@@ -11,16 +11,27 @@
 
 
   .login-logo {
-    max-width: 250px; /* Begrenze maximale Größe */
-    width: 100%; /* Automatisch skalieren */
-    height: auto; /* Korrekte Proportionen */
-    aspect-ratio: auto; /* Entfernt erzwungenes Quadrat */
-    object-fit: cover; /* Passt das Bild an, ohne Verzerrung */
-    display: block;
-    margin: 20px auto; /* Bessere Zentrierung */
+    width: min(20vw, 200px); /* Maximale Breite: 20% des Viewports, aber nicht größer als 200px */
+    height: auto; /* Höhe bleibt im Verhältnis zur Breite */
+    aspect-ratio: 1 / 1; /* Stellt sicher, dass es immer quadratisch bleibt */
+    object-fit: contain; /* Behält das Bildverhältnis bei */
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
 }
+
     .login-logo:hover { /* vergrößert das logo, wenn maus drüber ist */
         transform: scale(1.2);
     }
+
+/* Auf kleineren Bildschirmen das Logo kleiner machen */
+@media (max-width: 768px) {
+  .login-logo {
+    width: min(30vw, 150px); /* Auf Tablets kleiner */
+  }
+}
+
+@media (max-width: 480px) {
+  .login-logo {
+    width: min(40vw, 120px); /* Auf Smartphones noch kleiner */
+  }
+}
