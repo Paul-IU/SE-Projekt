@@ -38,3 +38,7 @@ app.get("/api/fragen", (req, res) => {
 app.listen(5000, () => {
   console.log("Server läuft auf Port 5000");
 });
+
+
+const authRoutes = require("./routes/authRoutes"); // Importiere die Authentifizierungsrouten
+app.use("/api", authRoutes);

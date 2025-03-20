@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Register.css"; // Eigenes CSS für Styling
+import "./Register.css"; 
+import axios from "axios";
 
 
 
@@ -14,6 +15,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [logo, setLogo] = useState(LOGO_DEFAULT)
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate();
 
   const handlePasswordFocus = () => {
     setLogo(LOGO_BLINDFOLD);
@@ -22,15 +27,31 @@ const Register = () => {
     setLogo(LOGO_DEFAULT)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); 
+    setSuccess(""); 
+
+    // Email klein schreiben, um case-sensitivity zu vermeiden //
+    const formattedEmail = email.toLowerCase();
+
     if (password !== confirmPassword) {
-      alert("Die Passwörter stimmen nicht überein!");
+      setError("Die Passwörter stimmen nicht überein!");
       return;
     }
-    console.log("Registrierung erfolgreich:", { email, password });
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/register", {
+        email: formattedEmail, 
+        passwort: password, 
+      });
+
+      setSuccess(response.data.message);
+      setTimeout(() => navigate("/login"), 2000); // Nach erfolgreicher Registrierung zum Login weiterleiten
+    } catch (err) {
+      setError(err.response?.data?.error || "Registrierung fehlgeschlagen, Server nicht erreichbar.");
+    }
   };
-    const navigate = useNavigate();
   
   return (
     <div className="register-container d-flex justify-content-center align-items-center vh-100">
@@ -42,6 +63,11 @@ const Register = () => {
       />
       <div className="register-box p-4 shadow-lg">
         <h2 className="text-center mb-4">Registrieren</h2>
+        
+        {/* Erfolg- oder Fehlermeldung anzeigen */}
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">E-Mail</label>
@@ -52,6 +78,7 @@ const Register = () => {
               placeholder="Gib deine E-Mail ein"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -65,6 +92,7 @@ const Register = () => {
               onFocus={handlePasswordFocus}
               onBlur={handlePasswordBlur}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -78,6 +106,7 @@ const Register = () => {
               onFocus={handlePasswordFocus}
               onBlur={handlePasswordBlur}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="btn btn-dark w-100">Registrieren</button>

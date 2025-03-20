@@ -12,3 +12,9 @@ CREATE TABLE fragebogen (
     richtige_antwort INT NOT NULL,
     author_id INT NOT NULL
 );
+
+CREATE TABLE benutzer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    passwort VARCHAR(255) NOT NULL
+);

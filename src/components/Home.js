@@ -37,6 +37,7 @@ const Home = () => {
         src={LOGOS.logo}
         alt="Hauptlogo"
         className="position-absolute top-0 start-0 m-4 home-logo"
+        onClick={() => navigate("/")}
       />
 
       {/* Account-Button oben rechts */}
